@@ -6,6 +6,6 @@ import (
 )
 
 type InstrumentStore interface {
-	Get(ctx context.Context, instrument int) (*models.Instrument, error)
-	List(ctx context.Context, instrument []int) (*models.InstrumentList, error)
+	Get(ctx context.Context, instrumentId int) (*models.Instrument, error)
+	List(ctx context.Context, instrumentIds []int) (*models.InstrumentList, error)
 }

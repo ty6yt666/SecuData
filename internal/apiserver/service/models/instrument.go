@@ -17,14 +17,19 @@ type Instrument struct {
 	WindCode           string    `json:"wind_code" gorm:"column:wind_code"`
 	ListExchange       string    `json:"list_exchange" gorm:"column:list_exchange"`
 	FundId             string    `json:"fund_id" gorm:"column:fund_id"`
-	CreatedAt          time.Time `json:"created_at,omitempty" gorm:"column:createdAt"`
-	UpdateAt           time.Time `json:"update_at,omitempty" gorm:"column:updateAt"`
+	Status             int       `json:"status" gorm:"column:status"`
+	CreatedAt          time.Time `json:"created_at,omitempty" gorm:"column:creation_datetime"`
+	UpdateAt           time.Time `json:"update_at,omitempty" gorm:"column:modification_datetime"`
 }
 
 type InstrumentList struct {
 	Items []*Instrument `json:"items"`
 }
 
+type InstrumentReturn struct {
+	Items map[Instrument]string `json:"data"`
+}
+
 func (instrument *Instrument) TableName() string {
-	return "instrument_basic"
+	return "instrument.instrument_basic"
 }

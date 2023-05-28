@@ -16,9 +16,9 @@ func newInstruments(ds *datastore) *instruments {
 	return &instruments{ds.db}
 }
 
-func (ins *instruments) Get(ctx context.Context, insObj *models.Instrument) (*models.Instrument, error) {
+func (ins *instruments) Get(ctx context.Context, InstrumentId int) (*models.Instrument, error) {
 	instrument := &models.Instrument{}
-	err := ins.db.Where("instrument_id = ?", insObj.InstrumentId).First(&instrument).Error
+	err := ins.db.Where("instrument_id = ?", InstrumentId).First(&instrument).Error
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			// todo: error type
@@ -29,9 +29,9 @@ func (ins *instruments) Get(ctx context.Context, insObj *models.Instrument) (*mo
 	return instrument, nil
 }
 
-func (ins *instruments) List(ctx context.Context, insIdList []int) (*models.InstrumentList, error) {
+func (ins *instruments) List(ctx context.Context, InstrumentIds []int) (*models.InstrumentList, error) {
 	instrumentList := &models.InstrumentList{}
 
-	d := ins.db.Where("instrument_id in ?", insIdList).Order("instrument_id").Find(&instrumentList.Items)
+	d := ins.db.Where("instrument_id in ?", InstrumentIds).Order("instrument_id").Find(&instrumentList.Items)
 	return instrumentList, d.Error
 }

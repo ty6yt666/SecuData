@@ -6,7 +6,6 @@ import (
 	"time"
 )
 
-// PostgresOptions defines options for postgres database.
 type PostgresOptions struct {
 	Host                  string        `json:"host,omitempty"`
 	Port                  int           `json:"port,omitempty"`
@@ -19,10 +18,10 @@ type PostgresOptions struct {
 	LogLevel              int           `json:"log-level"`
 }
 
-// NewPostgresOptions create a default value instance.
+// NewPostgresOptions create default instance
 func NewPostgresOptions() *PostgresOptions {
 	return &PostgresOptions{
-		Host:                  "localhost",
+		Host:                  "127.0.0.1",
 		Port:                  5432,
 		Username:              "root",
 		Password:              "root",
@@ -34,7 +33,6 @@ func NewPostgresOptions() *PostgresOptions {
 	}
 }
 
-// NewClient create postgres obj with the config
 func (o *PostgresOptions) NewClient() (*gorm.DB, error) {
 	opts := &db.Options{
 		Host:                  o.Host,
@@ -47,6 +45,5 @@ func (o *PostgresOptions) NewClient() (*gorm.DB, error) {
 		MaxConnectionLifeTime: o.MaxConnectionLifeTime,
 		LogLevel:              o.LogLevel,
 	}
-
 	return db.New(opts)
 }

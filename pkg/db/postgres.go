@@ -10,6 +10,7 @@ import (
 
 type Options struct {
 	Host                  string
+	Port                  int
 	Username              string
 	Password              string
 	Database              string
@@ -22,18 +23,16 @@ type Options struct {
 
 // New create a new gorm db instance with the options
 func New(opts *Options) (*gorm.DB, error) {
-	dsn := fmt.Sprintf(`%s:%s@tcp(%s)/%s?charset=utf8&parseTime=%t&loc=%s`,
+	// 目标样式：dsn = "host=127.0.0.1 port=5432 user=root password=root dbname=datamaster"
+	dsn := fmt.Sprintf(`host=%s port=%d user=%s password=%s dbname=%s`, // ?charset=utf8&parseTime=%t&loc=%s
+		opts.Host,
+		opts.Port,
 		opts.Username,
 		opts.Password,
-		opts.Host,
 		opts.Database,
-		true,
-		"Local",
 	)
 
-	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{
-		Logger: opts.Logger,
-	})
+	db, err := gorm.Open(postgres.Open(dsn))
 	if err != nil {
 		return nil, err
 	}
@@ -43,7 +42,7 @@ func New(opts *Options) (*gorm.DB, error) {
 		return nil, err
 	}
 
-	configDB.SetMaxOpenConns(opts.MaxOpenConnections)
+	configDB.SetMaxOpenConns(100)
 	configDB.SetConnMaxLifetime(opts.MaxConnectionLifeTime)
 	configDB.SetMaxIdleConns(opts.MaxIdleConnections)
 

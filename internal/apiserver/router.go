@@ -2,7 +2,8 @@ package apiserver
 
 import (
 	"gin_test/internal/apiserver/controller/v1/instrument"
-	"gin_test/internal/apiserver/store"
+	"gin_test/internal/apiserver/store/postgres"
+	pkg_options "gin_test/pkg/options"
 	"github.com/gin-gonic/gin"
 	"github.com/marmotedu/component-base/pkg/core"
 	"github.com/marmotedu/errors"
@@ -20,17 +21,15 @@ func installController(g *gin.Engine) *gin.Engine {
 		core.WriteResponse(context, errors.WithCode(500, "Page not found."), nil)
 	})
 
-	storeIns := store.Client()
+	// 没检查错误
+	storeIns, _ := postgres.GetPostgresFactorOr(pkg_options.NewPostgresOptions())
 	v1 := g.Group("/v1")
 	{
 		instrumentv1 := v1.Group("/instrument")
 		{
 			instrumentController := instrument.NewInstrumentController(storeIns)
-
-			//instrumentv1.GET("", func(context *gin.Context) {
-			//	core.WriteResponse(context, nil, "你看我像不像数据")
-			//})
 			instrumentv1.GET(":instrument_id", instrumentController.Get)
+			instrumentv1.GET("", instrumentController.GetByParam)
 		}
 	}
 	return g
