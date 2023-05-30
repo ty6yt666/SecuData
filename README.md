@@ -1,18 +1,17 @@
 # SecuData
-___
+
 
 [![GoDoc](https://pkg.go.dev/badge/github.com/gin-gonic/gin?status.svg)](https://pkg.go.dev/github.com/gin-gonic/gin?tab=doc)
 [![Docker](https://img.shields.io/docker/pulls/gin-gonic/gin)](https://hub.docker.com/r/gin-gonic/gin)
 
 SecuData is a financial data project written in Go language, utilizing Gin as the web framework. The project provides RPC and RESTful APIs for user use, without including data crawling functionality. The project's features are continuously being improved.
 
-
 The key features of SecuData are:
 - Provide basic financial data.
 - Provide financial time series data.
 - Other functions
 
-___
+
 ## Getting started
 - RESTful API - apiserver
   - Native deployment
