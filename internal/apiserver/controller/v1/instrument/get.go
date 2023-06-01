@@ -10,12 +10,10 @@ import (
 )
 
 func (i *InstrumentController) Get(c *gin.Context) {
-	instrumentId, err := strconv.Atoi(c.Param("instrument_id"))
-	if err != nil {
-		core.WriteResponse(c, err, nil)
-		return
-	}
-	ins, err := i.srv.Instruments().Get(c, instrumentId)
+	symbolType := c.Query("symbol_type")
+	symbols := c.Query("symbols")
+
+	ins, err := i.srv.Instruments().Get(c, symbolType, symbols)
 	if err != nil {
 		core.WriteResponse(c, err, config.Res{
 			Status: http.StatusNotFound,
