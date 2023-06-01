@@ -28,7 +28,7 @@ func installController(g *gin.Engine) *gin.Engine {
 		instrumentv1 := v1.Group("/instrument")
 		{
 			instrumentController := instrument.NewInstrumentController(storeIns)
-			instrumentv1.GET(":instrument_id", instrumentController.Get)
+			instrumentv1.GET("/query", instrumentController.Get)
 			instrumentv1.GET("", instrumentController.GetByParam)
 		}
 	}

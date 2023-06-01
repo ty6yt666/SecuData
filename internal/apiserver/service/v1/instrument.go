@@ -7,7 +7,7 @@ import (
 )
 
 type InstrumentSrv interface {
-	Get(ctx context.Context, instrumentId int) (*models.Instrument, error)
+	Get(ctx context.Context, symbolType string, symbol string) ([]*models.Instrument, error)
 	List(ctx context.Context, instrumentIds []int) (*models.InstrumentList, error)
 }
 
@@ -22,8 +22,8 @@ func newInstruments(srv *service) *instrumentService {
 	return &instrumentService{store: srv.store}
 }
 
-func (i instrumentService) Get(ctx context.Context, instrumentId int) (*models.Instrument, error) {
-	ins, err := i.store.Instruments().Get(ctx, instrumentId)
+func (i instrumentService) Get(ctx context.Context, symbolType string, symbol string) ([]*models.Instrument, error) {
+	ins, err := i.store.Instruments().Get(ctx, symbolType, symbol)
 	if err != nil {
 		return nil, err
 	}
